@@ -13,17 +13,30 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDFileLogger.h>
+#import <CocoaLumberjack/YQASLLogger.h>
 
-NS_ASSUME_NONNULL_BEGIN
-@interface DDFileLogger (Internal)
+@protocol YQLogger;
 
-- (void)logData:(NSData *)data;
+/**
+ *  This class provides the ability to capture the ASL (Apple System Logs)
+ */
+API_DEPRECATED("Use YQOSLogger instead", macosx(10.4,10.12), ios(2.0,10.0), watchos(2.0,3.0), tvos(9.0,10.0))
+@interface YQASLLogCapture : NSObject
 
-// Will assert if used outside logger's queue.
-- (void)lt_logData:(NSData *)data;
+/**
+ *  Start capturing logs
+ */
++ (void)start;
 
-- (NSData *)lt_dataForMessage:(DDLogMessage *)message;
+/**
+ *  Stop capturing logs
+ */
++ (void)stop;
+
+/**
+ *  The current capture level.
+ *  @note Default log level: YQLogLevelVerbose (i.e. capture all ASL messages).
+ */
+@property (class) YQLogLevel captureLevel;
 
 @end
-NS_ASSUME_NONNULL_END

@@ -16,11 +16,11 @@
 #import <Foundation/Foundation.h>
 
 // Disable legacy macros
-#ifndef DD_LEGACY_MACROS
-    #define DD_LEGACY_MACROS 0
+#ifndef YQ_LEGACY_MACROS
+    #define YQ_LEGACY_MACROS 0
 #endif
 
-#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/YQLog.h>
 
 /**
  * This class provides a log formatter that filters log statements from a logging context not on the whitelist.
@@ -35,13 +35,13 @@
  * But here's a quick overview / refresher:
  *
  * Every log statement has a logging context.
- * These come from the underlying logging macros defined in DDLog.h.
+ * These come from the underlying logging macros defined in YQLog.h.
  * The default logging context is zero.
  * You can define multiple logging context's for use in your application.
  * For example, logically separate parts of your app each have a different logging context.
  * Also 3rd party frameworks that make use of Lumberjack generally use their own dedicated logging context.
  **/
-@interface DDContextWhitelistFilterLogFormatter : NSObject <DDLogFormatter>
+@interface YQContextWhitelistFilterLogFormatter : NSObject <YQLogFormatter>
 
 /**
  *  Designated default initializer
@@ -83,7 +83,7 @@
 /**
  * This class provides a log formatter that filters log statements from a logging context on the blacklist.
  **/
-@interface DDContextBlacklistFilterLogFormatter : NSObject <DDLogFormatter>
+@interface YQContextBlacklistFilterLogFormatter : NSObject <YQLogFormatter>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 

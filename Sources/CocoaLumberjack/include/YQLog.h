@@ -16,17 +16,17 @@
 #import <Foundation/Foundation.h>
 
 // The Swift Package integration has no support for the legacy macros.
-#if __has_include(<CocoaLumberjack/DDLegacyMacros.h>)
+#if __has_include(<CocoaLumberjack/YQLegacyMacros.h>)
     // Enable 1.9.x legacy macros if imported directly and it's not a swift package build.
-    #ifndef DD_LEGACY_MACROS
-        #define DD_LEGACY_MACROS 1
+    #ifndef YQ_LEGACY_MACROS
+        #define YQ_LEGACY_MACROS 1
     #endif
-    // DD_LEGACY_MACROS is checked in the file itself
-    #import <CocoaLumberjack/DDLegacyMacros.h>
+    // YQ_LEGACY_MACROS is checked in the file itself
+    #import <CocoaLumberjack/YQLegacyMacros.h>
 #endif
 
 // Names of loggers.
-#import <CocoaLumberjack/DDLoggerNames.h>
+#import <CocoaLumberjack/YQLoggerNames.h>
 
 #if OS_OBJECT_USE_OBJC
     #define DISPATCH_QUEUE_REFERENCE_TYPE strong
@@ -34,10 +34,10 @@
     #define DISPATCH_QUEUE_REFERENCE_TYPE assign
 #endif
 
-@class DDLogMessage;
-@class DDLoggerInformation;
-@protocol DDLogger;
-@protocol DDLogFormatter;
+@class YQLogMessage;
+@class YQLoggerInformation;
+@protocol YQLogger;
+@protocol YQLogFormatter;
 
 /**
  * Define the standard options.
@@ -60,12 +60,12 @@
  * However, you still needed to see your error and info log messages.
  * You could accomplish that with the following:
  *
- * static const DDLogLevel ddLogLevel = DDLogFlagError | DDLogFlagInfo;
+ * static const YQLogLevel ddLogLevel = YQLogFlagError | YQLogFlagInfo;
  *
  * When LOG_LEVEL_DEF is defined as ddLogLevel.
  *
  * Flags may also be consulted when writing custom log formatters,
- * as the DDLogMessage class captures the individual flag that caused the log message to fire.
+ * as the YQLogMessage class captures the individual flag that caused the log message to fire.
  *
  * -- Levels --
  *
@@ -78,7 +78,7 @@
  *
  * if (LOG_VERBOSE) {
  *     for (id sprocket in sprockets)
- *         DDLogVerbose(@"sprocket: %@", [sprocket description])
+ *         YQLogVerbose(@"sprocket: %@", [sprocket description])
  * }
  *
  * -- Async --
@@ -106,71 +106,71 @@
 /**
  *  Flags accompany each log. They are used together with levels to filter out logs.
  */
-typedef NS_OPTIONS(NSUInteger, DDLogFlag){
+typedef NS_OPTIONS(NSUInteger, YQLogFlag){
     /**
-     *  0...00001 DDLogFlagError
+     *  0...00001 YQLogFlagError
      */
-    DDLogFlagError      = (1 << 0),
+    YQLogFlagError      = (1 << 0),
     
     /**
-     *  0...00010 DDLogFlagWarning
+     *  0...00010 YQLogFlagWarning
      */
-    DDLogFlagWarning    = (1 << 1),
+    YQLogFlagWarning    = (1 << 1),
     
     /**
-     *  0...00100 DDLogFlagInfo
+     *  0...00100 YQLogFlagInfo
      */
-    DDLogFlagInfo       = (1 << 2),
+    YQLogFlagInfo       = (1 << 2),
     
     /**
-     *  0...01000 DDLogFlagDebug
+     *  0...01000 YQLogFlagDebug
      */
-    DDLogFlagDebug      = (1 << 3),
+    YQLogFlagDebug      = (1 << 3),
     
     /**
-     *  0...10000 DDLogFlagVerbose
+     *  0...10000 YQLogFlagVerbose
      */
-    DDLogFlagVerbose    = (1 << 4)
+    YQLogFlagVerbose    = (1 << 4)
 };
 
 /**
  *  Log levels are used to filter out logs. Used together with flags.
  */
-typedef NS_ENUM(NSUInteger, DDLogLevel){
+typedef NS_ENUM(NSUInteger, YQLogLevel){
     /**
      *  No logs
      */
-    DDLogLevelOff       = 0,
+    YQLogLevelOff       = 0,
     
     /**
      *  Error logs only
      */
-    DDLogLevelError     = (DDLogFlagError),
+    YQLogLevelError     = (YQLogFlagError),
     
     /**
      *  Error and warning logs
      */
-    DDLogLevelWarning   = (DDLogLevelError   | DDLogFlagWarning),
+    YQLogLevelWarning   = (YQLogLevelError   | YQLogFlagWarning),
     
     /**
      *  Error, warning and info logs
      */
-    DDLogLevelInfo      = (DDLogLevelWarning | DDLogFlagInfo),
+    YQLogLevelInfo      = (YQLogLevelWarning | YQLogFlagInfo),
     
     /**
      *  Error, warning, info and debug logs
      */
-    DDLogLevelDebug     = (DDLogLevelInfo    | DDLogFlagDebug),
+    YQLogLevelDebug     = (YQLogLevelInfo    | YQLogFlagDebug),
     
     /**
      *  Error, warning, info, debug and verbose logs
      */
-    DDLogLevelVerbose   = (DDLogLevelDebug   | DDLogFlagVerbose),
+    YQLogLevelVerbose   = (YQLogLevelDebug   | YQLogFlagVerbose),
     
     /**
      *  All logs (1...11111)
      */
-    DDLogLevelAll       = NSUIntegerMax
+    YQLogLevelAll       = NSUIntegerMax
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -183,20 +183,20 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return the file name
  */
-FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
+FOUNDATION_EXTERN NSString * __nullable YQExtractFileNameWithoutExtension(const char *filePath, BOOL copy);
 
 /**
  * The THIS_FILE macro gives you an NSString of the file name.
  * For simplicity and clarity, the file name does not include the full path or file extension.
  *
- * For example: DDLogWarn(@"%@: Unable to find thingy", THIS_FILE) -> @"MyViewController: Unable to find thingy"
+ * For example: YQLogWarn(@"%@: Unable to find thingy", THIS_FILE) -> @"MyViewController: Unable to find thingy"
  **/
-#define THIS_FILE         (DDExtractFileNameWithoutExtension(__FILE__, NO))
+#define THIS_FILE         (YQExtractFileNameWithoutExtension(__FILE__, NO))
 
 /**
  * The THIS_METHOD macro gives you the name of the current objective-c method.
  *
- * For example: DDLogWarn(@"%@ - Requires non-nil strings", THIS_METHOD) -> @"setMake:model: requires non-nil strings"
+ * For example: YQLogWarn(@"%@ - Requires non-nil strings", THIS_METHOD) -> @"setMake:model: requires non-nil strings"
  *
  * Note: This does NOT work in straight C functions (non objective-c).
  * Instead you should use the predefined __FUNCTION__ macro.
@@ -210,15 +210,15 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 
 /**
  *  The main class, exposes all logging mechanisms, loggers, ...
- *  For most of the users, this class is hidden behind the logging functions like `DDLogInfo`
+ *  For most of the users, this class is hidden behind the logging functions like `YQLogInfo`
  */
-@interface DDLog : NSObject
+@interface YQLog : NSObject
 
 /**
- *  Returns the singleton `DDLog`.
- *  The instance is used by `DDLog` class methods.
+ *  Returns the singleton `YQLog`.
+ *  The instance is used by `YQLog` class methods.
  */
-@property (class, nonatomic, strong, readonly) DDLog *sharedInstance;
+@property (class, nonatomic, strong, readonly) YQLog *sharedInstance;
 
 /**
  * Provides access to the underlying logging queue.
@@ -243,8 +243,8 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param format       the log format
  */
 + (void)log:(BOOL)asynchronous
-      level:(DDLogLevel)level
-       flag:(DDLogFlag)flag
+      level:(YQLogLevel)level
+       flag:(YQLogFlag)flag
     context:(NSInteger)context
        file:(const char *)file
    function:(const char *)function
@@ -269,8 +269,8 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param format       the log format
  */
 - (void)log:(BOOL)asynchronous
-      level:(DDLogLevel)level
-       flag:(DDLogFlag)flag
+      level:(YQLogLevel)level
+       flag:(YQLogFlag)flag
     context:(NSInteger)context
        file:(const char *)file
    function:(const char *)function
@@ -296,8 +296,8 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param argList      the arguments list as a va_list
  */
 + (void)log:(BOOL)asynchronous
-      level:(DDLogLevel)level
-       flag:(DDLogFlag)flag
+      level:(YQLogLevel)level
+       flag:(YQLogFlag)flag
     context:(NSInteger)context
        file:(const char *)file
    function:(const char *)function
@@ -324,8 +324,8 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param argList      the arguments list as a va_list
  */
 - (void)log:(BOOL)asynchronous
-      level:(DDLogLevel)level
-       flag:(DDLogFlag)flag
+      level:(YQLogLevel)level
+       flag:(YQLogFlag)flag
     context:(NSInteger)context
        file:(const char *)file
    function:(const char *)function
@@ -337,24 +337,24 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  * Logging Primitive.
  *
- * This method can be used if you manually prepared DDLogMessage.
+ * This method can be used if you manually prepared YQLogMessage.
  *
  *  @param asynchronous YES if the logging is done async, NO if you want to force sync
- *  @param logMessage   the log message stored in a `DDLogMessage` model object
+ *  @param logMessage   the log message stored in a `YQLogMessage` model object
  */
 + (void)log:(BOOL)asynchronous
-    message:(DDLogMessage *)logMessage NS_SWIFT_NAME(log(asynchronous:message:));
+    message:(YQLogMessage *)logMessage NS_SWIFT_NAME(log(asynchronous:message:));
 
 /**
  * Logging Primitive.
  *
- * This method can be used if you manually prepared DDLogMessage.
+ * This method can be used if you manually prepared YQLogMessage.
  *
  *  @param asynchronous YES if the logging is done async, NO if you want to force sync
- *  @param logMessage   the log message stored in a `DDLogMessage` model object
+ *  @param logMessage   the log message stored in a `YQLogMessage` model object
  */
 - (void)log:(BOOL)asynchronous
-    message:(DDLogMessage *)logMessage NS_SWIFT_NAME(log(asynchronous:message:));
+    message:(YQLogMessage *)logMessage NS_SWIFT_NAME(log(asynchronous:message:));
 
 /**
  * Since logging can be asynchronous, there may be times when you want to flush the logs.
@@ -381,54 +381,16 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  * Adds the logger to the system.
  *
- * This is equivalent to invoking `[DDLog addLogger:logger withLogLevel:DDLogLevelAll]`.
+ * This is equivalent to invoking `[YQLog addLogger:logger withLogLevel:YQLogLevelAll]`.
  **/
-+ (void)addLogger:(id <DDLogger>)logger;
++ (void)addLogger:(id <YQLogger>)logger;
 
 /**
  * Adds the logger to the system.
  *
- * This is equivalent to invoking `[DDLog addLogger:logger withLogLevel:DDLogLevelAll]`.
+ * This is equivalent to invoking `[YQLog addLogger:logger withLogLevel:YQLogLevelAll]`.
  **/
-- (void)addLogger:(id <DDLogger>)logger;
-
-/**
- * Adds the logger to the system.
- *
- * The level that you provide here is a preemptive filter (for performance).
- * That is, the level specified here will be used to filter out logMessages so that
- * the logger is never even invoked for the messages.
- *
- * More information:
- * When you issue a log statement, the logging framework iterates over each logger,
- * and checks to see if it should forward the logMessage to the logger.
- * This check is done using the level parameter passed to this method.
- *
- * For example:
- *
- * `[DDLog addLogger:consoleLogger withLogLevel:DDLogLevelVerbose];`
- * `[DDLog addLogger:fileLogger    withLogLevel:DDLogLevelWarning];`
- *
- * `DDLogError(@"oh no");` => gets forwarded to consoleLogger & fileLogger
- * `DDLogInfo(@"hi");`     => gets forwarded to consoleLogger only
- *
- * It is important to remember that Lumberjack uses a BITMASK.
- * Many developers & third party frameworks may define extra log levels & flags.
- * For example:
- *
- * `#define SOME_FRAMEWORK_LOG_FLAG_TRACE (1 << 6) // 0...1000000`
- *
- * So if you specify `DDLogLevelVerbose` to this method, you won't see the framework's trace messages.
- *
- * `(SOME_FRAMEWORK_LOG_FLAG_TRACE & DDLogLevelVerbose) => (01000000 & 00011111) => NO`
- *
- * Consider passing `DDLogLevelAll` to this method, which has all bits set.
- * You can also use the exclusive-or bitwise operator to get a bitmask that has all flags set,
- * except the ones you explicitly don't want. For example, if you wanted everything except verbose & debug:
- *
- * `((DDLogLevelAll ^ DDLogLevelVerbose) | DDLogLevelInfo)`
- **/
-+ (void)addLogger:(id <DDLogger>)logger withLevel:(DDLogLevel)level;
+- (void)addLogger:(id <YQLogger>)logger;
 
 /**
  * Adds the logger to the system.
@@ -444,11 +406,11 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *
  * For example:
  *
- * `[DDLog addLogger:consoleLogger withLogLevel:DDLogLevelVerbose];`
- * `[DDLog addLogger:fileLogger    withLogLevel:DDLogLevelWarning];`
+ * `[YQLog addLogger:consoleLogger withLogLevel:YQLogLevelVerbose];`
+ * `[YQLog addLogger:fileLogger    withLogLevel:YQLogLevelWarning];`
  *
- * `DDLogError(@"oh no");` => gets forwarded to consoleLogger & fileLogger
- * `DDLogInfo(@"hi");`     => gets forwarded to consoleLogger only
+ * `YQLogError(@"oh no");` => gets forwarded to consoleLogger & fileLogger
+ * `YQLogInfo(@"hi");`     => gets forwarded to consoleLogger only
  *
  * It is important to remember that Lumberjack uses a BITMASK.
  * Many developers & third party frameworks may define extra log levels & flags.
@@ -456,27 +418,65 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *
  * `#define SOME_FRAMEWORK_LOG_FLAG_TRACE (1 << 6) // 0...1000000`
  *
- * So if you specify `DDLogLevelVerbose` to this method, you won't see the framework's trace messages.
+ * So if you specify `YQLogLevelVerbose` to this method, you won't see the framework's trace messages.
  *
- * `(SOME_FRAMEWORK_LOG_FLAG_TRACE & DDLogLevelVerbose) => (01000000 & 00011111) => NO`
+ * `(SOME_FRAMEWORK_LOG_FLAG_TRACE & YQLogLevelVerbose) => (01000000 & 00011111) => NO`
  *
- * Consider passing `DDLogLevelAll` to this method, which has all bits set.
+ * Consider passing `YQLogLevelAll` to this method, which has all bits set.
  * You can also use the exclusive-or bitwise operator to get a bitmask that has all flags set,
  * except the ones you explicitly don't want. For example, if you wanted everything except verbose & debug:
  *
- * `((DDLogLevelAll ^ DDLogLevelVerbose) | DDLogLevelInfo)`
+ * `((YQLogLevelAll ^ YQLogLevelVerbose) | YQLogLevelInfo)`
  **/
-- (void)addLogger:(id <DDLogger>)logger withLevel:(DDLogLevel)level;
++ (void)addLogger:(id <YQLogger>)logger withLevel:(YQLogLevel)level;
+
+/**
+ * Adds the logger to the system.
+ *
+ * The level that you provide here is a preemptive filter (for performance).
+ * That is, the level specified here will be used to filter out logMessages so that
+ * the logger is never even invoked for the messages.
+ *
+ * More information:
+ * When you issue a log statement, the logging framework iterates over each logger,
+ * and checks to see if it should forward the logMessage to the logger.
+ * This check is done using the level parameter passed to this method.
+ *
+ * For example:
+ *
+ * `[YQLog addLogger:consoleLogger withLogLevel:YQLogLevelVerbose];`
+ * `[YQLog addLogger:fileLogger    withLogLevel:YQLogLevelWarning];`
+ *
+ * `YQLogError(@"oh no");` => gets forwarded to consoleLogger & fileLogger
+ * `YQLogInfo(@"hi");`     => gets forwarded to consoleLogger only
+ *
+ * It is important to remember that Lumberjack uses a BITMASK.
+ * Many developers & third party frameworks may define extra log levels & flags.
+ * For example:
+ *
+ * `#define SOME_FRAMEWORK_LOG_FLAG_TRACE (1 << 6) // 0...1000000`
+ *
+ * So if you specify `YQLogLevelVerbose` to this method, you won't see the framework's trace messages.
+ *
+ * `(SOME_FRAMEWORK_LOG_FLAG_TRACE & YQLogLevelVerbose) => (01000000 & 00011111) => NO`
+ *
+ * Consider passing `YQLogLevelAll` to this method, which has all bits set.
+ * You can also use the exclusive-or bitwise operator to get a bitmask that has all flags set,
+ * except the ones you explicitly don't want. For example, if you wanted everything except verbose & debug:
+ *
+ * `((YQLogLevelAll ^ YQLogLevelVerbose) | YQLogLevelInfo)`
+ **/
+- (void)addLogger:(id <YQLogger>)logger withLevel:(YQLogLevel)level;
 
 /**
  *  Remove the logger from the system
  */
-+ (void)removeLogger:(id <DDLogger>)logger;
++ (void)removeLogger:(id <YQLogger>)logger;
 
 /**
  *  Remove the logger from the system
  */
-- (void)removeLogger:(id <DDLogger>)logger;
+- (void)removeLogger:(id <YQLogger>)logger;
 
 /**
  *  Remove all the current loggers
@@ -491,22 +491,22 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  *  Return all the current loggers
  */
-@property (class, nonatomic, copy, readonly) NSArray<id<DDLogger>> *allLoggers;
+@property (class, nonatomic, copy, readonly) NSArray<id<YQLogger>> *allLoggers;
 
 /**
  *  Return all the current loggers
  */
-@property (nonatomic, copy, readonly) NSArray<id<DDLogger>> *allLoggers;
+@property (nonatomic, copy, readonly) NSArray<id<YQLogger>> *allLoggers;
 
 /**
- *  Return all the current loggers with their level (aka DDLoggerInformation).
+ *  Return all the current loggers with their level (aka YQLoggerInformation).
  */
-@property (class, nonatomic, copy, readonly) NSArray<DDLoggerInformation *> *allLoggersWithLevel;
+@property (class, nonatomic, copy, readonly) NSArray<YQLoggerInformation *> *allLoggersWithLevel;
 
 /**
- *  Return all the current loggers with their level (aka DDLoggerInformation).
+ *  Return all the current loggers with their level (aka YQLoggerInformation).
  */
-@property (nonatomic, copy, readonly) NSArray<DDLoggerInformation *> *allLoggersWithLevel;
+@property (nonatomic, copy, readonly) NSArray<YQLoggerInformation *> *allLoggersWithLevel;
 
 /**
  * Registered Dynamic Logging
@@ -530,14 +530,14 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *
  *  @param aClass `Class` param
  */
-+ (DDLogLevel)levelForClass:(Class)aClass;
++ (YQLogLevel)levelForClass:(Class)aClass;
 
 /**
  *  Returns the current log level for a certain class
  *
  *  @param aClassName string param
  */
-+ (DDLogLevel)levelForClassWithName:(NSString *)aClassName;
++ (YQLogLevel)levelForClassWithName:(NSString *)aClassName;
 
 /**
  *  Set the log level for a certain class
@@ -545,7 +545,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param level  the new level
  *  @param aClass `Class` param
  */
-+ (void)setLevel:(DDLogLevel)level forClass:(Class)aClass;
++ (void)setLevel:(YQLogLevel)level forClass:(Class)aClass;
 
 /**
  *  Set the log level for a certain class
@@ -553,7 +553,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  @param level      the new level
  *  @param aClassName string param
  */
-+ (void)setLevel:(DDLogLevel)level forClassWithName:(NSString *)aClassName;
++ (void)setLevel:(YQLogLevel)level forClassWithName:(NSString *)aClassName;
 
 @end
 
@@ -566,14 +566,14 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  Basically, it can log messages, store a logFormatter plus a bunch of optional behaviors.
  *  (i.e. flush, get its loggerQueue, get its name, ...
  */
-@protocol DDLogger <NSObject>
+@protocol YQLogger <NSObject>
 
 /**
  *  The log message method
  *
  *  @param logMessage the message (model)
  */
-- (void)logMessage:(DDLogMessage *)logMessage NS_SWIFT_NAME(log(message:));
+- (void)logMessage:(YQLogMessage *)logMessage NS_SWIFT_NAME(log(message:));
 
 /**
  * Formatters may optionally be added to any logger.
@@ -581,7 +581,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * If no formatter is set, the logger simply logs the message as it is given in logMessage,
  * or it may use its own built in formatting style.
  **/
-@property (nonatomic, strong) id <DDLogFormatter> logFormatter;
+@property (nonatomic, strong) id <YQLogFormatter> logFormatter;
 
 @optional
 
@@ -621,9 +621,9 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * For example, a database logger may only save occasionally as the disk IO is slow.
  * In such loggers, this method should be implemented to flush any pending IO.
  *
- * This allows invocations of DDLog's flushLog method to be propogated to loggers that need it.
+ * This allows invocations of YQLog's flushLog method to be propogated to loggers that need it.
  *
- * Note that DDLog's flushLog method is invoked automatically when the application quits,
+ * Note that YQLog's flushLog method is invoked automatically when the application quits,
  * and it may be also invoked manually by the developer prior to application crashes, or other such reasons.
  **/
 - (void)flush;
@@ -641,7 +641,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * The created queue will receive its name from this method.
  * This may be helpful for debugging or profiling reasons.
  **/
-@property (copy, nonatomic, readonly) DDLoggerName loggerName;
+@property (copy, nonatomic, readonly) YQLoggerName loggerName;
 
 @end
 
@@ -652,7 +652,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  *  This protocol describes the behavior of a log formatter
  */
-@protocol DDLogFormatter <NSObject>
+@protocol YQLogFormatter <NSObject>
 @required
 
 /**
@@ -666,7 +666,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * The formatter may also optionally filter the log message by returning nil,
  * in which case the logger will not log the message.
  **/
-- (NSString * __nullable)formatLogMessage:(DDLogMessage *)logMessage NS_SWIFT_NAME(format(message:));
+- (NSString * __nullable)formatLogMessage:(YQLogMessage *)logMessage NS_SWIFT_NAME(format(message:));
 
 @optional
 
@@ -679,7 +679,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * Or if a formatter has potentially thread-unsafe code (e.g. NSDateFormatter),
  * it could possibly use these hooks to switch to thread-safe versions of the code.
  **/
-- (void)didAddToLogger:(id <DDLogger>)logger;
+- (void)didAddToLogger:(id <YQLogger>)logger;
 
 /**
  * A single formatter instance can be added to multiple loggers.
@@ -691,12 +691,12 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  * it could possibly use these hooks to switch to thread-safe versions of the code or use dispatch_set_specific()
 .* to add its own specific values.
  **/
-- (void)didAddToLogger:(id <DDLogger>)logger inQueue:(dispatch_queue_t)queue;
+- (void)didAddToLogger:(id <YQLogger>)logger inQueue:(dispatch_queue_t)queue;
 
 /**
  *  See the above description for `didAddToLogger:`
  */
-- (void)willRemoveFromLogger:(id <DDLogger>)logger;
+- (void)willRemoveFromLogger:(id <YQLogger>)logger;
 
 @end
 
@@ -707,7 +707,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  *  This protocol describes a dynamic logging component
  */
-@protocol DDRegisteredDynamicLogging
+@protocol YQRegisteredDynamicLogging
 
 /**
  * Implement these methods to allow a file's log level to be managed from a central location.
@@ -726,13 +726,13 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *     return ddLogLevel;
  * }
  *
- * + (void)ddSetLogLevel:(DDLogLevel)level
+ * + (void)ddSetLogLevel:(YQLogLevel)level
  * {
  *     ddLogLevel = level;
  * }
  * ```
  **/
-@property (class, nonatomic, readwrite, setter=ddSetLogLevel:) DDLogLevel ddLogLevel;
+@property (class, nonatomic, readwrite, setter=ddSetLogLevel:) YQLogLevel ddLogLevel;
 
 @end
 
@@ -747,39 +747,39 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
 /**
  *  Log message options, allow copying certain log elements
  */
-typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
+typedef NS_OPTIONS(NSInteger, YQLogMessageOptions){
     /**
      *  Use this to use a copy of the file path
      */
-    DDLogMessageCopyFile        = 1 << 0,
+    YQLogMessageCopyFile        = 1 << 0,
     /**
      *  Use this to use a copy of the function name
      */
-    DDLogMessageCopyFunction    = 1 << 1,
+    YQLogMessageCopyFunction    = 1 << 1,
     /**
      *  Use this to use avoid a copy of the message
      */
-    DDLogMessageDontCopyMessage = 1 << 2
+    YQLogMessageDontCopyMessage = 1 << 2
 };
 
 /**
- * The `DDLogMessage` class encapsulates information about the log message.
+ * The `YQLogMessage` class encapsulates information about the log message.
  * If you write custom loggers or formatters, you will be dealing with objects of this class.
  **/
-@interface DDLogMessage : NSObject <NSCopying>
+@interface YQLogMessage : NSObject <NSCopying>
 {
     // Direct accessors to be used only for performance
     @public
     NSString *_message;
-    DDLogLevel _level;
-    DDLogFlag _flag;
+    YQLogLevel _level;
+    YQLogFlag _flag;
     NSInteger _context;
     NSString *_file;
     NSString *_fileName;
     NSString *_function;
     NSUInteger _line;
     id _tag;
-    DDLogMessageOptions _options;
+    YQLogMessageOptions _options;
     NSDate *_timestamp;
     NSString *_threadID;
     NSString *_threadName;
@@ -813,20 +813,20 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
  *  @param function  the current function
  *  @param line      the current code line
  *  @param tag       potential tag
- *  @param options   a bitmask which supports DDLogMessageCopyFile and DDLogMessageCopyFunction.
+ *  @param options   a bitmask which supports YQLogMessageCopyFile and YQLogMessageCopyFunction.
  *  @param timestamp the log timestamp
  *
  *  @return a new instance of a log message model object
  */
 - (instancetype)initWithMessage:(NSString *)message
-                          level:(DDLogLevel)level
-                           flag:(DDLogFlag)flag
+                          level:(YQLogLevel)level
+                           flag:(YQLogFlag)flag
                         context:(NSInteger)context
                            file:(NSString *)file
                        function:(NSString * __nullable)function
                            line:(NSUInteger)line
                             tag:(id __nullable)tag
-                        options:(DDLogMessageOptions)options
+                        options:(YQLogMessageOptions)options
                       timestamp:(NSDate * __nullable)timestamp NS_DESIGNATED_INITIALIZER;
 
 /**
@@ -837,15 +837,15 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
  *  The log message
  */
 @property (readonly, nonatomic) NSString *message;
-@property (readonly, nonatomic) DDLogLevel level;
-@property (readonly, nonatomic) DDLogFlag flag;
+@property (readonly, nonatomic) YQLogLevel level;
+@property (readonly, nonatomic) YQLogFlag flag;
 @property (readonly, nonatomic) NSInteger context;
 @property (readonly, nonatomic) NSString *file;
 @property (readonly, nonatomic) NSString *fileName;
 @property (readonly, nonatomic) NSString * __nullable function;
 @property (readonly, nonatomic) NSUInteger line;
 @property (readonly, nonatomic) id __nullable tag;
-@property (readonly, nonatomic) DDLogMessageOptions options;
+@property (readonly, nonatomic) YQLogMessageOptions options;
 @property (readonly, nonatomic) NSDate *timestamp;
 @property (readonly, nonatomic) NSString *threadID; // ID as it appears in NSLog calculated from the machThreadID
 @property (readonly, nonatomic) NSString *threadName;
@@ -858,7 +858,7 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * The `DDLogger` protocol specifies that an optional formatter can be added to a logger.
+ * The `YQLogger` protocol specifies that an optional formatter can be added to a logger.
  * Most (but not all) loggers will want to support formatters.
  *
  * However, writing getters and setters in a thread safe manner,
@@ -873,15 +873,15 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
  * Logger implementations may simply extend this class,
  * and they can ACCESS THE FORMATTER VARIABLE DIRECTLY from within their `logMessage:` method!
  **/
-@interface DDAbstractLogger : NSObject <DDLogger>
+@interface YQAbstractLogger : NSObject <YQLogger>
 {
     // Direct accessors to be used only for performance
     @public
-    id <DDLogFormatter> _logFormatter;
+    id <YQLogFormatter> _logFormatter;
     dispatch_queue_t _loggerQueue;
 }
 
-@property (nonatomic, strong, nullable) id <DDLogFormatter> logFormatter;
+@property (nonatomic, strong, nullable) id <YQLogFormatter> logFormatter;
 @property (nonatomic, DISPATCH_QUEUE_REFERENCE_TYPE) dispatch_queue_t loggerQueue;
 
 // For thread-safety assertions
@@ -902,13 +902,13 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface DDLoggerInformation : NSObject
+@interface YQLoggerInformation : NSObject
 
-@property (nonatomic, readonly) id <DDLogger> logger;
-@property (nonatomic, readonly) DDLogLevel level;
+@property (nonatomic, readonly) id <YQLogger> logger;
+@property (nonatomic, readonly) YQLogLevel level;
 
-+ (DDLoggerInformation *)informationWithLogger:(id <DDLogger>)logger
-                           andLevel:(DDLogLevel)level;
++ (YQLoggerInformation *)informationWithLogger:(id <YQLogger>)logger
+                           andLevel:(YQLogLevel)level;
 
 @end
 

@@ -14,11 +14,11 @@
 //   prior written permission of Deusty, LLC.
 
 // Disable legacy macros
-#ifndef DD_LEGACY_MACROS
-    #define DD_LEGACY_MACROS 0
+#ifndef YQ_LEGACY_MACROS
+    #define YQ_LEGACY_MACROS 0
 #endif
 
-#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/YQLog.h>
 
 /**
  * The constant/variable/method responsible for controlling the current log level.
@@ -39,7 +39,7 @@
  * This big multiline macro makes all the other macros easier to read.
  **/
 #define LOGV_MACRO(isAsynchronous, lvl, flg, ctx, atag, fnct, frmt, avalist) \
-        [DDLog log : isAsynchronous                                          \
+        [YQLog log : isAsynchronous                                          \
              level : lvl                                                     \
               flag : flg                                                     \
            context : ctx                                                     \
@@ -75,9 +75,9 @@
 /**
  * Ready to use log macros with no context or tag.
  **/
-#define DDLogVError(frmt, avalist)   LOGV_MAYBE(NO,                LOG_LEVEL_DEF, DDLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, avalist)
-#define DDLogVWarn(frmt, avalist)    LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, avalist)
-#define DDLogVInfo(frmt, avalist)    LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, avalist)
-#define DDLogVDebug(frmt, avalist)   LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, avalist)
-#define DDLogVVerbose(frmt, avalist) LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, avalist)
+#define YQLogVError(frmt, avalist)   LOGV_MAYBE(NO,                LOG_LEVEL_DEF, YQLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, avalist)
+#define YQLogVWarn(frmt, avalist)    LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, avalist)
+#define YQLogVInfo(frmt, avalist)    LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, avalist)
+#define YQLogVDebug(frmt, avalist)   LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, avalist)
+#define YQLogVVerbose(frmt, avalist) LOGV_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, avalist)
 

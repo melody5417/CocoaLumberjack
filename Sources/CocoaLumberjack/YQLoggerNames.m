@@ -13,30 +13,9 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDASLLogger.h>
+#import <CocoaLumberjack/YQLoggerNames.h>
 
-@protocol DDLogger;
-
-/**
- *  This class provides the ability to capture the ASL (Apple System Logs)
- */
-API_DEPRECATED("Use DDOSLogger instead", macosx(10.4,10.12), ios(2.0,10.0), watchos(2.0,3.0), tvos(9.0,10.0))
-@interface DDASLLogCapture : NSObject
-
-/**
- *  Start capturing logs
- */
-+ (void)start;
-
-/**
- *  Stop capturing logs
- */
-+ (void)stop;
-
-/**
- *  The current capture level.
- *  @note Default log level: DDLogLevelVerbose (i.e. capture all ASL messages).
- */
-@property (class) DDLogLevel captureLevel;
-
-@end
+YQLoggerName const YQLoggerNameASL    = @"cocoa.lumberjack.aslLogger";
+YQLoggerName const YQLoggerNameTTY    = @"cocoa.lumberjack.ttyLogger";
+YQLoggerName const YQLoggerNameOS     = @"cocoa.lumberjack.osLogger";
+YQLoggerName const YQLoggerNameFile   = @"cocoa.lumberjack.fileLogger";

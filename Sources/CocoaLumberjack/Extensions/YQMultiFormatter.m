@@ -13,24 +13,24 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDMultiFormatter.h>
+#import <CocoaLumberjack/YQMultiFormatter.h>
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
 #endif
 
 
-@interface DDMultiFormatter () {
+@interface YQMultiFormatter () {
     dispatch_queue_t _queue;
     NSMutableArray *_formatters;
 }
 
-- (DDLogMessage *)logMessageForLine:(NSString *)line originalMessage:(DDLogMessage *)message;
+- (YQLogMessage *)logMessageForLine:(NSString *)line originalMessage:(YQLogMessage *)message;
 
 @end
 
 
-@implementation DDMultiFormatter
+@implementation YQMultiFormatter
 
 - (instancetype)init {
     self = [super init];
@@ -45,12 +45,12 @@
 
 #pragma mark Processing
 
-- (NSString *)formatLogMessage:(DDLogMessage *)logMessage {
+- (NSString *)formatLogMessage:(YQLogMessage *)logMessage {
     __block NSString *line = logMessage->_message;
 
     dispatch_sync(_queue, ^{
-        for (id<DDLogFormatter> formatter in self->_formatters) {
-            DDLogMessage *message = [self logMessageForLine:line originalMessage:logMessage];
+        for (id<YQLogFormatter> formatter in self->_formatters) {
+            YQLogMessage *message = [self logMessageForLine:line originalMessage:logMessage];
             line = [formatter formatLogMessage:message];
 
             if (!line) {
@@ -62,8 +62,8 @@
     return line;
 }
 
-- (DDLogMessage *)logMessageForLine:(NSString *)line originalMessage:(DDLogMessage *)message {
-    DDLogMessage *newMessage = [message copy];
+- (YQLogMessage *)logMessageForLine:(NSString *)line originalMessage:(YQLogMessage *)message {
+    YQLogMessage *newMessage = [message copy];
 
     newMessage->_message = line;
     return newMessage;
@@ -81,13 +81,13 @@
     return formatters;
 }
 
-- (void)addFormatter:(id<DDLogFormatter>)formatter {
+- (void)addFormatter:(id<YQLogFormatter>)formatter {
     dispatch_barrier_async(_queue, ^{
         [self->_formatters addObject:formatter];
     });
 }
 
-- (void)removeFormatter:(id<DDLogFormatter>)formatter {
+- (void)removeFormatter:(id<YQLogFormatter>)formatter {
     dispatch_barrier_async(_queue, ^{
         [self->_formatters removeObject:formatter];
     });
@@ -99,7 +99,7 @@
     });
 }
 
-- (BOOL)isFormattingWithFormatter:(id<DDLogFormatter>)formatter {
+- (BOOL)isFormattingWithFormatter:(id<YQLogFormatter>)formatter {
     __block BOOL hasFormatter;
 
     dispatch_sync(_queue, ^{

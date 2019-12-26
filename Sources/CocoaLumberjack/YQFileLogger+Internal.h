@@ -13,9 +13,17 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDLoggerNames.h>
+#import <CocoaLumberjack/YQFileLogger.h>
 
-DDLoggerName const DDLoggerNameASL    = @"cocoa.lumberjack.aslLogger";
-DDLoggerName const DDLoggerNameTTY    = @"cocoa.lumberjack.ttyLogger";
-DDLoggerName const DDLoggerNameOS     = @"cocoa.lumberjack.osLogger";
-DDLoggerName const DDLoggerNameFile   = @"cocoa.lumberjack.fileLogger";
+NS_ASSUME_NONNULL_BEGIN
+@interface YQFileLogger (Internal)
+
+- (void)logData:(NSData *)data;
+
+// Will assert if used outside logger's queue.
+- (void)lt_logData:(NSData *)data;
+
+- (NSData *)lt_dataForMessage:(YQLogMessage *)message;
+
+@end
+NS_ASSUME_NONNULL_END

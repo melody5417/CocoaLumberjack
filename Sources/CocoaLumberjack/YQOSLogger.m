@@ -13,11 +13,11 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDOSLogger.h>
+#import <CocoaLumberjack/YQOSLogger.h>
 
 #import <os/log.h>
 
-@interface DDOSLogger () {
+@interface YQOSLogger () {
     NSString *_subsystem;
     NSString *_category;
 }
@@ -26,7 +26,7 @@
 @property (strong, nonatomic, readwrite) os_log_t  logger;
 @end
 
-@implementation DDOSLogger
+@implementation YQOSLogger
 
 @synthesize subsystem = _subsystem;
 @synthesize category = _category;
@@ -46,16 +46,16 @@
     return self;
 }
 
-static DDOSLogger *sharedInstance;
+static YQOSLogger *sharedInstance;
 
 - (instancetype)init {
     return [self initWithSubsystem:nil category:nil];
 }
 
 + (instancetype)sharedInstance {
-    static dispatch_once_t DDOSLoggerOnceToken;
+    static dispatch_once_t YQOSLoggerOnceToken;
 
-    dispatch_once(&DDOSLoggerOnceToken, ^{
+    dispatch_once(&YQOSLoggerOnceToken, ^{
         sharedInstance = [[[self class] alloc] init];
     });
 
@@ -80,11 +80,11 @@ static DDOSLogger *sharedInstance;
     return _logger;
 }
 
-#pragma mark - DDLogger
+#pragma mark - YQLogger
 
-- (void)logMessage:(DDLogMessage *)logMessage {
+- (void)logMessage:(YQLogMessage *)logMessage {
     // Skip captured log messages
-    if ([logMessage->_fileName isEqualToString:@"DDASLLogCapture"]) {
+    if ([logMessage->_fileName isEqualToString:@"YQASLLogCapture"]) {
         return;
     }
 
@@ -95,15 +95,15 @@ static DDOSLogger *sharedInstance;
             const char *msg = [message UTF8String];
             __auto_type logger = [self logger];
             switch (logMessage->_flag) {
-                case DDLogFlagError     :
+                case YQLogFlagError     :
                     os_log_error(logger, "%{public}s", msg);
                     break;
-                case DDLogFlagWarning   :
-                case DDLogFlagInfo      :
+                case YQLogFlagWarning   :
+                case YQLogFlagInfo      :
                     os_log_info(logger, "%{public}s", msg);
                     break;
-                case DDLogFlagDebug     :
-                case DDLogFlagVerbose   :
+                case YQLogFlagDebug     :
+                case YQLogFlagVerbose   :
                 default                 :
                     os_log_debug(logger, "%{public}s", msg);
                     break;
@@ -114,7 +114,7 @@ static DDOSLogger *sharedInstance;
 
 }
 
-- (DDLoggerName)loggerName {
-    return DDLoggerNameOS;
+- (YQLoggerName)loggerName {
+    return YQLoggerNameOS;
 }
 @end

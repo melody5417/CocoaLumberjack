@@ -13,14 +13,14 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import <CocoaLumberjack/DDContextFilterLogFormatter.h>
+#import <CocoaLumberjack/YQContextFilterLogFormatter.h>
 #import <pthread/pthread.h>
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
 #endif
 
-@interface DDLoggingContextSet : NSObject
+@interface YQLoggingContextSet : NSObject
 
 - (void)addToSet:(NSInteger)loggingContext;
 - (void)removeFromSet:(NSInteger)loggingContext;
@@ -35,18 +35,18 @@
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface DDContextWhitelistFilterLogFormatter () {
-    DDLoggingContextSet *_contextSet;
+@interface YQContextWhitelistFilterLogFormatter () {
+    YQLoggingContextSet *_contextSet;
 }
 
 @end
 
 
-@implementation DDContextWhitelistFilterLogFormatter
+@implementation YQContextWhitelistFilterLogFormatter
 
 - (instancetype)init {
     if ((self = [super init])) {
-        _contextSet = [[DDLoggingContextSet alloc] init];
+        _contextSet = [[YQLoggingContextSet alloc] init];
     }
 
     return self;
@@ -68,7 +68,7 @@
     return [_contextSet isInSet:loggingContext];
 }
 
-- (NSString *)formatLogMessage:(DDLogMessage *)logMessage {
+- (NSString *)formatLogMessage:(YQLogMessage *)logMessage {
     if ([self isOnWhitelist:logMessage->_context]) {
         return logMessage->_message;
     } else {
@@ -82,18 +82,18 @@
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface DDContextBlacklistFilterLogFormatter () {
-    DDLoggingContextSet *_contextSet;
+@interface YQContextBlacklistFilterLogFormatter () {
+    YQLoggingContextSet *_contextSet;
 }
 
 @end
 
 
-@implementation DDContextBlacklistFilterLogFormatter
+@implementation YQContextBlacklistFilterLogFormatter
 
 - (instancetype)init {
     if ((self = [super init])) {
-        _contextSet = [[DDLoggingContextSet alloc] init];
+        _contextSet = [[YQLoggingContextSet alloc] init];
     }
 
     return self;
@@ -115,7 +115,7 @@
     return [_contextSet isInSet:loggingContext];
 }
 
-- (NSString *)formatLogMessage:(DDLogMessage *)logMessage {
+- (NSString *)formatLogMessage:(YQLogMessage *)logMessage {
     if ([self isOnBlacklist:logMessage->_context]) {
         return nil;
     } else {
@@ -130,7 +130,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-@interface DDLoggingContextSet () {
+@interface YQLoggingContextSet () {
     pthread_mutex_t _mutex;
     NSMutableSet *_set;
 }
@@ -138,7 +138,7 @@
 @end
 
 
-@implementation DDLoggingContextSet
+@implementation YQLoggingContextSet
 
 - (instancetype)init {
     if ((self = [super init])) {

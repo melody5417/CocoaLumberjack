@@ -18,18 +18,18 @@ import CocoaLumberjack
 import CocoaLumberjackSwiftSupport
 #endif
 
-extension DDLogFlag {
-    public static func from(_ logLevel: DDLogLevel) -> DDLogFlag {
-        return DDLogFlag(rawValue: logLevel.rawValue)
+extension YQLogFlag {
+    public static func from(_ logLevel: YQLogLevel) -> YQLogFlag {
+        return YQLogFlag(rawValue: logLevel.rawValue)
     }
 
-	public init(_ logLevel: DDLogLevel) {
-        self = DDLogFlag(rawValue: logLevel.rawValue)
+	public init(_ logLevel: YQLogLevel) {
+        self = YQLogFlag(rawValue: logLevel.rawValue)
 	}
 
     /// Returns the log level, or the lowest equivalent.
-    public func toLogLevel() -> DDLogLevel {
-        if let ourValid = DDLogLevel(rawValue: rawValue) {
+    public func toLogLevel() -> YQLogLevel {
+        if let ourValid = YQLogLevel(rawValue: rawValue) {
             return ourValid
         } else {
             if contains(.verbose) {
@@ -49,8 +49,8 @@ extension DDLogFlag {
     }
 }
 
-/// The log level that can dynamically limit log messages (vs. the static DDDefaultLogLevel). This log level will only be checked, if the message passes the `DDDefaultLogLevel`.
-public var dynamicLogLevel = DDLogLevel.all
+/// The log level that can dynamically limit log messages (vs. the static YQDefaultLogLevel). This log level will only be checked, if the message passes the `YQDefaultLogLevel`.
+public var dynamicLogLevel = YQLogLevel.all
 
 /// Resets the `dynamicLogLevel` to `.all`.
 /// - SeeAlso: `dynamicLogLevel`
@@ -60,7 +60,7 @@ public func resetDynamicLogLevel() {
 }
 
 @available(*, deprecated, message: "Please use dynamicLogLevel", renamed: "dynamicLogLevel")
-public var defaultDebugLevel: DDLogLevel {
+public var defaultDebugLevel: YQLogLevel {
     get {
         return dynamicLogLevel
     }
@@ -78,21 +78,21 @@ public func resetDefaultDebugLevel() {
 public var asyncLoggingEnabled = true
 
 @inlinable
-public func _DDLogMessage(_ message: @autoclosure () -> String,
-                          level: DDLogLevel,
-                          flag: DDLogFlag,
+public func _YQLogMessage(_ message: @autoclosure () -> String,
+                          level: YQLogLevel,
+                          flag: YQLogFlag,
                           context: Int,
                           file: StaticString,
                           function: StaticString,
                           line: UInt,
                           tag: Any?,
                           asynchronous: Bool,
-                          ddlog: DDLog) {
+                          ddlog: YQLog) {
     // The `dynamicLogLevel` will always be checked here (instead of being passed in).
-    // We cannot "mix" it with the `DDDefaultLogLevel`, because otherwise the compiler won't strip strings that are not logged.
+    // We cannot "mix" it with the `YQDefaultLogLevel`, because otherwise the compiler won't strip strings that are not logged.
     if level.rawValue & flag.rawValue != 0 && dynamicLogLevel.rawValue & flag.rawValue != 0 {
-        // Tell the DDLogMessage constructor to copy the C strings that get passed to it.
-        let logMessage = DDLogMessage(message: message(),
+        // Tell the YQLogMessage constructor to copy the C strings that get passed to it.
+        let logMessage = YQLogMessage(message: message(),
                                       level: level,
                                       flag: flag,
                                       context: context,
@@ -107,68 +107,68 @@ public func _DDLogMessage(_ message: @autoclosure () -> String,
 }
 
 @inlinable
-public func DDLogDebug(_ message: @autoclosure () -> String,
-                       level: DDLogLevel = DDDefaultLogLevel,
+public func YQLogDebug(_ message: @autoclosure () -> String,
+                       level: YQLogLevel = YQDefaultLogLevel,
                        context: Int = 0,
                        file: StaticString = #file,
                        function: StaticString = #function,
                        line: UInt = #line,
                        tag: Any? = nil,
                        asynchronous async: Bool = asyncLoggingEnabled,
-                       ddlog: DDLog = .sharedInstance) {
-    _DDLogMessage(message(), level: level, flag: .debug, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
+                       ddlog: YQLog = .sharedInstance) {
+    _YQLogMessage(message(), level: level, flag: .debug, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
 }
 
 @inlinable
-public func DDLogInfo(_ message: @autoclosure () -> String,
-                      level: DDLogLevel = DDDefaultLogLevel,
+public func YQLogInfo(_ message: @autoclosure () -> String,
+                      level: YQLogLevel = YQDefaultLogLevel,
                       context: Int = 0,
                       file: StaticString = #file,
                       function: StaticString = #function,
                       line: UInt = #line,
                       tag: Any? = nil,
                       asynchronous async: Bool = asyncLoggingEnabled,
-                      ddlog: DDLog = .sharedInstance) {
-    _DDLogMessage(message(), level: level, flag: .info, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
+                      ddlog: YQLog = .sharedInstance) {
+    _YQLogMessage(message(), level: level, flag: .info, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
 }
 
 @inlinable
-public func DDLogWarn(_ message: @autoclosure () -> String,
-                      level: DDLogLevel = DDDefaultLogLevel,
+public func YQLogWarn(_ message: @autoclosure () -> String,
+                      level: YQLogLevel = YQDefaultLogLevel,
                       context: Int = 0,
                       file: StaticString = #file,
                       function: StaticString = #function,
                       line: UInt = #line,
                       tag: Any? = nil,
                       asynchronous async: Bool = asyncLoggingEnabled,
-                      ddlog: DDLog = .sharedInstance) {
-    _DDLogMessage(message(), level: level, flag: .warning, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
+                      ddlog: YQLog = .sharedInstance) {
+    _YQLogMessage(message(), level: level, flag: .warning, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
 }
 
 @inlinable
-public func DDLogVerbose(_ message: @autoclosure () -> String,
-                         level: DDLogLevel = DDDefaultLogLevel,
+public func YQLogVerbose(_ message: @autoclosure () -> String,
+                         level: YQLogLevel = YQDefaultLogLevel,
                          context: Int = 0,
                          file: StaticString = #file,
                          function: StaticString = #function,
                          line: UInt = #line,
                          tag: Any? = nil,
                          asynchronous async: Bool = asyncLoggingEnabled,
-                         ddlog: DDLog = .sharedInstance) {
-    _DDLogMessage(message(), level: level, flag: .verbose, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
+                         ddlog: YQLog = .sharedInstance) {
+    _YQLogMessage(message(), level: level, flag: .verbose, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
 }
 
 @inlinable
-public func DDLogError(_ message: @autoclosure () -> String,
-                       level: DDLogLevel = DDDefaultLogLevel,
+public func YQLogError(_ message: @autoclosure () -> String,
+                       level: YQLogLevel = YQDefaultLogLevel,
                        context: Int = 0,
                        file: StaticString = #file,
                        function: StaticString = #function,
                        line: UInt = #line,
                        tag: Any? = nil,
                        asynchronous async: Bool = false,
-                       ddlog: DDLog = .sharedInstance) {
-    _DDLogMessage(message(), level: level, flag: .error, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
+                       ddlog: YQLog = .sharedInstance) {
+    _YQLogMessage(message(), level: level, flag: .error, context: context, file: file, function: function, line: line, tag: tag, asynchronous: async, ddlog: ddlog)
 }
 
 /// Returns a String of the current filename, without full path or extension.

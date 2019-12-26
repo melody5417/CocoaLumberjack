@@ -16,11 +16,11 @@
 /**
  * NSAssert replacement that will output a log message even when assertions are disabled.
  **/
-#define DDAssert(condition, frmt, ...)                                                \
+#define YQAssert(condition, frmt, ...)                                                \
         if (!(condition)) {                                                           \
             NSString *description = [NSString stringWithFormat:frmt, ## __VA_ARGS__]; \
-            DDLogError(@"%@", description);                                           \
+            YQLogError(@"%@", description);                                           \
             NSAssert(NO, @"%@", description);                                         \
         }
-#define DDAssertCondition(condition) DDAssert(condition, @"Condition not satisfied: %s", #condition)
+#define YQAssertCondition(condition) YQAssert(condition, @"Condition not satisfied: %s", #condition)
 

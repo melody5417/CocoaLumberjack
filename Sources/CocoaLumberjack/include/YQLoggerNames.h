@@ -17,10 +17,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSString *DDLoggerName NS_TYPED_EXTENSIBLE_ENUM;
-FOUNDATION_EXPORT DDLoggerName const DDLoggerNameASL NS_SWIFT_NAME(DDLoggerName.asl); // DDASLLogger
-FOUNDATION_EXPORT DDLoggerName const DDLoggerNameTTY NS_SWIFT_NAME(DDLoggerName.tty); // DDTTYLogger
-FOUNDATION_EXPORT DDLoggerName const DDLoggerNameOS NS_SWIFT_NAME(DDLoggerName.os); // DDOSLogger
-FOUNDATION_EXPORT DDLoggerName const DDLoggerNameFile NS_SWIFT_NAME(DDLoggerName.file); // DDFileLogger
+typedef NSString *YQLoggerName NS_TYPED_EXTENSIBLE_ENUM;
+FOUNDATION_EXPORT YQLoggerName const YQLoggerNameASL NS_SWIFT_NAME(YQLoggerName.asl); // YQASLLogger
+FOUNDATION_EXPORT YQLoggerName const YQLoggerNameTTY NS_SWIFT_NAME(YQLoggerName.tty); // YQTTYLogger
+FOUNDATION_EXPORT YQLoggerName const YQLoggerNameOS NS_SWIFT_NAME(YQLoggerName.os); // YQOSLogger
+FOUNDATION_EXPORT YQLoggerName const YQLoggerNameFile NS_SWIFT_NAME(YQLoggerName.file); // YQFileLogger
 
 NS_ASSUME_NONNULL_END

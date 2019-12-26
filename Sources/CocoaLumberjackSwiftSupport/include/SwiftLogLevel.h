@@ -16,13 +16,13 @@
 #ifndef SwiftLogLevel_h
 #define SwiftLogLevel_h
 
-#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/YQLog.h>
 
-#ifndef DD_LOG_LEVEL
-// #warning 'DD_LOG_LEVEL' is not defined. Using 'DDLogLevelAll' as default. Consider defining it yourself.
-#define DD_LOG_LEVEL DDLogLevelAll
+#ifndef YQ_LOG_LEVEL
+// #warning 'YQ_LOG_LEVEL' is not defined. Using 'YQLogLevelAll' as default. Consider defining it yourself.
+#define YQ_LOG_LEVEL YQLogLevelAll
 #endif
 
-static const DDLogLevel DDDefaultLogLevel = DD_LOG_LEVEL;
+static const YQLogLevel YQDefaultLogLevel = YQ_LOG_LEVEL;
 
 #endif /* SwiftLogLevel_h */

@@ -14,11 +14,11 @@
 //   prior written permission of Deusty, LLC.
 
 // Disable legacy macros
-#ifndef DD_LEGACY_MACROS
-    #define DD_LEGACY_MACROS 0
+#ifndef YQ_LEGACY_MACROS
+    #define YQ_LEGACY_MACROS 0
 #endif
 
-#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/YQLog.h>
 
 /**
  * The constant/variable/method responsible for controlling the current log level.
@@ -39,7 +39,7 @@
  * These big multiline macros makes all the other macros easier to read.
  **/
 #define LOG_MACRO(isAsynchronous, lvl, flg, ctx, atag, fnct, frmt, ...) \
-        [DDLog log : isAsynchronous                                     \
+        [YQLog log : isAsynchronous                                     \
              level : lvl                                                \
               flag : flg                                                \
            context : ctx                                                \
@@ -49,7 +49,7 @@
                tag : atag                                               \
             format : (frmt), ## __VA_ARGS__]
 
-#define LOG_MACRO_TO_DDLOG(ddlog, isAsynchronous, lvl, flg, ctx, atag, fnct, frmt, ...) \
+#define LOG_MACRO_TO_YQLOG(ddlog, isAsynchronous, lvl, flg, ctx, atag, fnct, frmt, ...) \
         [ddlog log : isAsynchronous                                     \
              level : lvl                                                \
               flag : flg                                                \
@@ -82,20 +82,20 @@
 #define LOG_MAYBE(async, lvl, flg, ctx, tag, fnct, frmt, ...) \
         do { if(lvl & flg) LOG_MACRO(async, lvl, flg, ctx, tag, fnct, frmt, ##__VA_ARGS__); } while(0)
 
-#define LOG_MAYBE_TO_DDLOG(ddlog, async, lvl, flg, ctx, tag, fnct, frmt, ...) \
-        do { if(lvl & flg) LOG_MACRO_TO_DDLOG(ddlog, async, lvl, flg, ctx, tag, fnct, frmt, ##__VA_ARGS__); } while(0)
+#define LOG_MAYBE_TO_YQLOG(ddlog, async, lvl, flg, ctx, tag, fnct, frmt, ...) \
+        do { if(lvl & flg) LOG_MACRO_TO_YQLOG(ddlog, async, lvl, flg, ctx, tag, fnct, frmt, ##__VA_ARGS__); } while(0)
 
 /**
  * Ready to use log macros with no context or tag.
  **/
-#define DDLogError(frmt, ...)   LOG_MAYBE(NO,                LOG_LEVEL_DEF, DDLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogWarn(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogInfo(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogDebug(frmt, ...)   LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogVerbose(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogError(frmt, ...)   LOG_MAYBE(NO,                LOG_LEVEL_DEF, YQLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogWarn(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogInfo(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogDebug(frmt, ...)   LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogVerbose(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
 
-#define DDLogErrorToDDLog(ddlog, frmt, ...)   LOG_MAYBE_TO_DDLOG(ddlog, NO,                LOG_LEVEL_DEF, DDLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogWarnToDDLog(ddlog, frmt, ...)    LOG_MAYBE_TO_DDLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogInfoToDDLog(ddlog, frmt, ...)    LOG_MAYBE_TO_DDLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogDebugToDDLog(ddlog, frmt, ...)   LOG_MAYBE_TO_DDLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define DDLogVerboseToDDLog(ddlog, frmt, ...) LOG_MAYBE_TO_DDLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, DDLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogErrorToYQLog(ddlog, frmt, ...)   LOG_MAYBE_TO_YQLOG(ddlog, NO,                LOG_LEVEL_DEF, YQLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogWarnToYQLog(ddlog, frmt, ...)    LOG_MAYBE_TO_YQLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogInfoToYQLog(ddlog, frmt, ...)    LOG_MAYBE_TO_YQLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogDebugToYQLog(ddlog, frmt, ...)   LOG_MAYBE_TO_YQLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define YQLogVerboseToYQLog(ddlog, frmt, ...) LOG_MAYBE_TO_YQLOG(ddlog, LOG_ASYNC_ENABLED, LOG_LEVEL_DEF, YQLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)

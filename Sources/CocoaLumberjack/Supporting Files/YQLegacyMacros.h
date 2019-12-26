@@ -16,30 +16,30 @@
 /**
  * Legacy macros used for 1.9.x backwards compatibility.
  *
- * Imported by default when importing a DDLog.h directly and DD_LEGACY_MACROS is not defined and set to 0.
+ * Imported by default when importing a YQLog.h directly and YQ_LEGACY_MACROS is not defined and set to 0.
  **/
-#if DD_LEGACY_MACROS
+#if YQ_LEGACY_MACROS
 
 #warning CocoaLumberjack 1.9.x legacy macros enabled. \
-Disable legacy macros by importing CocoaLumberjack.h or DDLogMacros.h instead of DDLog.h or add `#define DD_LEGACY_MACROS 0` before importing DDLog.h.
+Disable legacy macros by importing CocoaLumberjack.h or YQLogMacros.h instead of YQLog.h or add `#define YQ_LEGACY_MACROS 0` before importing YQLog.h.
 
 #ifndef LOG_LEVEL_DEF
     #define LOG_LEVEL_DEF ddLogLevel
 #endif
 
-#define LOG_FLAG_ERROR    DDLogFlagError
-#define LOG_FLAG_WARN     DDLogFlagWarning
-#define LOG_FLAG_INFO     DDLogFlagInfo
-#define LOG_FLAG_DEBUG    DDLogFlagDebug
-#define LOG_FLAG_VERBOSE  DDLogFlagVerbose
+#define LOG_FLAG_ERROR    YQLogFlagError
+#define LOG_FLAG_WARN     YQLogFlagWarning
+#define LOG_FLAG_INFO     YQLogFlagInfo
+#define LOG_FLAG_DEBUG    YQLogFlagDebug
+#define LOG_FLAG_VERBOSE  YQLogFlagVerbose
 
-#define LOG_LEVEL_OFF     DDLogLevelOff
-#define LOG_LEVEL_ERROR   DDLogLevelError
-#define LOG_LEVEL_WARN    DDLogLevelWarning
-#define LOG_LEVEL_INFO    DDLogLevelInfo
-#define LOG_LEVEL_DEBUG   DDLogLevelDebug
-#define LOG_LEVEL_VERBOSE DDLogLevelVerbose
-#define LOG_LEVEL_ALL     DDLogLevelAll
+#define LOG_LEVEL_OFF     YQLogLevelOff
+#define LOG_LEVEL_ERROR   YQLogLevelError
+#define LOG_LEVEL_WARN    YQLogLevelWarning
+#define LOG_LEVEL_INFO    YQLogLevelInfo
+#define LOG_LEVEL_DEBUG   YQLogLevelDebug
+#define LOG_LEVEL_VERBOSE YQLogLevelVerbose
+#define LOG_LEVEL_ALL     YQLogLevelAll
 
 #define LOG_ASYNC_ENABLED YES
 
@@ -50,7 +50,7 @@ Disable legacy macros by importing CocoaLumberjack.h or DDLogMacros.h instead of
 #define LOG_ASYNC_VERBOSE  (YES && LOG_ASYNC_ENABLED)
 
 #define LOG_MACRO(isAsynchronous, lvl, flg, ctx, atag, fnct, frmt, ...) \
-        [DDLog log : isAsynchronous                                     \
+        [YQLog log : isAsynchronous                                     \
              level : lvl                                                \
               flag : flg                                                \
            context : ctx                                                \
@@ -66,10 +66,10 @@ Disable legacy macros by importing CocoaLumberjack.h or DDLogMacros.h instead of
 #define LOG_OBJC_MAYBE(async, lvl, flg, ctx, frmt, ...) \
         LOG_MAYBE(async, lvl, flg, ctx, __PRETTY_FUNCTION__, frmt, ## __VA_ARGS__)
 
-#define DDLogError(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_ERROR,   LOG_LEVEL_DEF, LOG_FLAG_ERROR,   0, frmt, ##__VA_ARGS__)
-#define DDLogWarn(frmt, ...)    LOG_OBJC_MAYBE(LOG_ASYNC_WARN,    LOG_LEVEL_DEF, LOG_FLAG_WARN,    0, frmt, ##__VA_ARGS__)
-#define DDLogInfo(frmt, ...)    LOG_OBJC_MAYBE(LOG_ASYNC_INFO,    LOG_LEVEL_DEF, LOG_FLAG_INFO,    0, frmt, ##__VA_ARGS__)
-#define DDLogDebug(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_DEBUG,   LOG_LEVEL_DEF, LOG_FLAG_DEBUG,   0, frmt, ##__VA_ARGS__)
-#define DDLogVerbose(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_VERBOSE, LOG_LEVEL_DEF, LOG_FLAG_VERBOSE, 0, frmt, ##__VA_ARGS__)
+#define YQLogError(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_ERROR,   LOG_LEVEL_DEF, LOG_FLAG_ERROR,   0, frmt, ##__VA_ARGS__)
+#define YQLogWarn(frmt, ...)    LOG_OBJC_MAYBE(LOG_ASYNC_WARN,    LOG_LEVEL_DEF, LOG_FLAG_WARN,    0, frmt, ##__VA_ARGS__)
+#define YQLogInfo(frmt, ...)    LOG_OBJC_MAYBE(LOG_ASYNC_INFO,    LOG_LEVEL_DEF, LOG_FLAG_INFO,    0, frmt, ##__VA_ARGS__)
+#define YQLogDebug(frmt, ...)   LOG_OBJC_MAYBE(LOG_ASYNC_DEBUG,   LOG_LEVEL_DEF, LOG_FLAG_DEBUG,   0, frmt, ##__VA_ARGS__)
+#define YQLogVerbose(frmt, ...) LOG_OBJC_MAYBE(LOG_ASYNC_VERBOSE, LOG_LEVEL_DEF, LOG_FLAG_VERBOSE, 0, frmt, ##__VA_ARGS__)
 
 #endif
